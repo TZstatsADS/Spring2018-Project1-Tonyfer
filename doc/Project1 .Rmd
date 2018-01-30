@@ -1,6 +1,8 @@
 ---
 title: "Project1 Yu Tong yt2594"
-output: html_notebook
+output:
+  pdf_document: default
+  html_notebook: default
 ---
 In this project, we are going to explore the 'story' behind the inauguation speeches of american presidents.
 
@@ -50,6 +52,7 @@ for(i in seq(nrow(inaug.list))) {
   cat(text)  
   sink() 
 }
+write.csv(inaug.list,file="/Users/warabe/Documents/GitHub/Spring2018-Project1-Tonyfer/output/wholeinauglist.csv")
 ```
 The first 10 lines of datafrme 'inaug.list' are:
 ```{r}
@@ -227,7 +230,6 @@ presid.summary=tbl_df(sentence.list)%>%
   )
 
 presid.summary=as.data.frame(presid.summary)
-presid.summary[,2] <- gsub(NA, 0, presid.summary[,2])
 for(i in 2:9){
   presid.summary[,i][is.na(presid.summary[,i])] = 0
 }
@@ -271,11 +273,11 @@ ldaOut <-LDA(dtm, k, method="Gibbs", control=list(nstart=nstart,
                                                  thin=thin))
 ldaOut.topics <- as.matrix(topics(ldaOut))
 table(c(1:k, ldaOut.topics))
-write.csv(ldaOut.topics,file=paste("../out/LDAGibbs",k,"DocsToTopics.csv"))
+write.csv(ldaOut.topics,file=paste("../output/LDAGibbs",k,"DocsToTopics.csv"))
 ldaOut.terms <- as.matrix(terms(ldaOut,20))
-write.csv(ldaOut.terms,file=paste("../out/LDAGibbs",k,"TopicsToTerms.csv"))
+write.csv(ldaOut.terms,file=paste("../output/LDAGibbs",k,"TopicsToTerms.csv"))
 topicProbabilities <- as.data.frame(ldaOut@gamma)
-write.csv(topicProbabilities,file=paste("../out/LDAGibbs",k,"TopicProbabilities.csv"))
+write.csv(topicProbabilities,file=paste("../output/LDAGibbs",k,"TopicProbabilities.csv"))
 ```
 ```{r}
 terms.beta=ldaOut@beta
@@ -308,7 +310,7 @@ heatmap.2(as.matrix(topic.summary[,topic.plot+1]),
 
 
 Step 4: Clustering thespeeches based on the topics
-```{r, fig.width=3, fig.height=3}
+```{r, fig.width=6, fig.height=6}
 presid.summary=tbl_df(inaug.list.df)%>%
   filter(File%in%sel.comparison)%>%
   select(File, Economy:Legislation)%>%
@@ -330,7 +332,7 @@ fviz_cluster(km.res,
 By using tf-idf, we can compute the cosine distance and the euclidean distance of every two speeches. Then we can analyze the similiarity of the speech and its neighbors.
 
 Step 1: Compute tf-idf
-```{r}
+```{r, warning=FALSE}
 dtm <- DocumentTermMatrix(ff.all,
                           control = list(weighting = function(x)
                                              weightTfIdf(x, 
@@ -389,7 +391,7 @@ get_query <- function(president, term, distance){
 }
 ```
 For eample,
-```{r}
+```{r, warning=FALSE}
 get_query("Abraham Lincoln", 1, "cos")
 get_query("Abraham Lincoln", 1, "sqr")
 
