@@ -207,7 +207,8 @@ sel.comparison=c("DonaldJTrump","JohnMcCain", "GeorgeBush", "MittRomney", "Georg
                  "GeorgeWashington", "WilliamHowardTaft", "AndrewJackson",
                  "WilliamHenryHarrison", "JohnAdams")
 ```
-```{r, fig.width=6, fig.height=6}
+
+```{r, echo = T, fig.width=6, fig.height=6}
 presid.summary=tbl_df(sentence.list)%>%
   filter(File%in%sel.comparison)%>%
   #group_by(paste0(type, File))%>%
@@ -287,7 +288,7 @@ topics.terms
 ldaOut.terms
 ```
 Step 3: Clustering of topics
-```{r, fig.width=5, fig.height=10}
+```{r, fig.width=3.3, fig.height=6.6}
 par(mar=c(1,1,1,1))
 topic.summary=tbl_df(inaug.list.df)%>%
               select(File, Economy:Legislation)%>%
@@ -304,8 +305,10 @@ heatmap.2(as.matrix(topic.summary[,topic.plot+1]),
           cexRow = 0.9, cexCol = 0.9, margins = c(8, 8),
           trace = "none", density.info = "none")
 ```
+
+
 Step 4: Clustering thespeeches based on the topics
-```{r, fig.width=6, fig.height=6}
+```{r, fig.width=3, fig.height=3}
 presid.summary=tbl_df(inaug.list.df)%>%
   filter(File%in%sel.comparison)%>%
   select(File, Economy:Legislation)%>%
