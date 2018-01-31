@@ -3,3 +3,8 @@
 
 The output directory contains analysis output, processed datasets, logs, or other processed things.
 
+
+The file "LDAGibbs 15 DocsToTopics.csv" contains the information of LDA result.
+
+
+
